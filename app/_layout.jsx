@@ -98,23 +98,31 @@
 import { Slot, usePathname } from 'expo-router';
 import { View } from 'react-native';
 import BottomNav from './components/bottomnav';
+import { CartProvider } from './context/CartContext';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function Layout() {
   const pathname = usePathname();
   console.log(pathname);
 
-
   // Define the routes where you don't want the BottomNav
-  const hideBottomNavRoutes = ['/welcome', '/splash', '/signinscreen', '/OTPScreen'];
+  const hideBottomNavRoutes = ['/welcome', '/splash', '/signinscreen', '/OTPScreen', '/MapScreen', '/AddressDetailsScreen'];
 
   const shouldHideNav = hideBottomNavRoutes.includes(pathname);
   console.log(shouldHideNav);
 
   return (
-    <View style={{ flex: 1 }}>
-      <Slot /> 
-      {!shouldHideNav && <BottomNav />}
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <CartProvider>
+          <View style={{ flex: 1 }}>
+            <Slot />
+            {!shouldHideNav && <BottomNav />}
+          </View>
+        </CartProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
 

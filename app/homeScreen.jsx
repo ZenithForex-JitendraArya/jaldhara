@@ -8,6 +8,8 @@ import {
     Image,
     FlatList,
     TouchableOpacity,
+    Platform,
+    KeyboardAvoidingView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import assets from './assets';
@@ -20,41 +22,50 @@ export default function HomeScreen() {
 
 
     return (
-        <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 80 }}>
-            {/* Header */}
-            <View style={styles.header}>
-                <TextInput placeholder="Search" style={styles.searchBox} />
-                <Icon name="notifications-outline" size={24} color="#fff" />
-            </View>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={{ flex: 1 }}
+        >
+            <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 80 }}>
+                {/* Header */}
+                <View style={styles.header}>
+                    <TextInput placeholder="Search" style={styles.searchBox} />
+                    <Icon name="notifications-outline" size={24} color="#fff" />
+                </View>
 
-            {/* Greeting */}
-            <Text style={styles.greeting}>Good Morning</Text>
-            <Text style={styles.subGreeting}>Rise And Shine! It's Your Water</Text>
+                {/* Greeting */}
+                <Text style={styles.greeting}>Good Morning</Text>
+                <Text style={styles.subGreeting}>Rise And Shine! It's Your Water</Text>
 
-            {/* Stories */}
-            <FlatList
-                data={stories}
-                horizontal
-                contentContainerStyle={styles.storyList}
-                keyExtractor={(_, i) => i.toString()}
-                renderItem={() => (
-                    <View style={styles.storyItem}>
-                        <Image
-                            source={{ uri: 'https://cdn-icons-png.flaticon.com/512/147/147144.png' }}
-                            style={styles.avatar}
-                        />
-                        <Text style={styles.storyText}>Story</Text>
-                    </View>
-                )}
-            />
-            <Text style={styles.sectionTitle}>Best Seller</Text>
-            <Image
-                source={banner1}
-                style={styles.bestSellerCard}
-            />
-            <Text style={styles.sectionTitle}>Recommend</Text>
-            <ProductGridScreen />
-        </ScrollView>
+                {/* Stories */}
+                <FlatList
+                    data={stories}
+                    horizontal
+                    contentContainerStyle={styles.storyList}
+                    keyExtractor={(_, i) => i.toString()}
+                    renderItem={() => (
+                        <View style={styles.storyItem}>
+                            <Image
+                                source={{ uri: 'https://cdn-icons-png.flaticon.com/512/147/147144.png' }}
+                                style={styles.avatar}
+                            />
+                            <Text style={styles.storyText}>Story</Text>
+                        </View>
+                    )}
+                />
+                <View style={styles.mid}>
+                    <Text style={styles.sectionTitle}>Best Seller</Text>
+                    <Image
+                        source={banner1}
+                        style={styles.bestSellerCard}
+                    />
+                </View>
+                {/* <View style={styles.mid}> */}
+                <Text style={styles.sectionTitle}>Recommend</Text>
+                <ProductGridScreen />
+                {/* </View> */}
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -107,6 +118,9 @@ const styles = StyleSheet.create({
         color: '#000',
         marginTop: 4,
         fontSize: 12,
+    },
+    mid: {
+        margin: 'auto'
     },
     sectionTitle: {
         fontWeight: 'bold',

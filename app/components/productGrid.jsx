@@ -9,6 +9,7 @@ import {
     Dimensions,
 } from 'react-native';
 import { ProductCard } from './productCard';
+import { FlashList } from '@shopify/flash-list';
 const data = [
     {
         name: '20Ltr Bisleri Can',
@@ -33,7 +34,7 @@ const data = [
         price: 203,
         originalPrice: 259,
         discount: '21%',
-        image: 'https://via.placeholder.com/100x100.png?text=Eggs',
+        // image: 'https://via.placeholder.com/100x100.png?text=Eggs',
     },
     {
         name: 'Chicken Puff',
@@ -41,7 +42,7 @@ const data = [
         price: 80,
         originalPrice: 154,
         discount: '48%',
-        image: 'https://via.placeholder.com/100x100.png?text=Puff',
+        // image: 'https://via.placeholder.com/100x100.png?text=Puff',
     },
 ];
 
@@ -51,12 +52,20 @@ const numColumns = 1;
 
 export default function ProductGridScreen() {
     return (
-        <FlatList
+        // <FlatList
+        //     data={data}
+        //     renderItem={({ item }) => <ProductCard item={item} />}
+        //     keyExtractor={(_, index) => index.toString()}
+        //     numColumns={numColumns}
+        //     contentContainerStyle={styles.container}
+        // />
+        <FlashList
             data={data}
             renderItem={({ item }) => <ProductCard item={item} />}
             keyExtractor={(_, index) => index.toString()}
             numColumns={numColumns}
             contentContainerStyle={styles.container}
+            estimatedItemSize={100}
         />
     );
 }

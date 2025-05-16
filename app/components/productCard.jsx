@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     View,
     Text,
@@ -8,8 +8,29 @@ import {
     Dimensions,
 } from 'react-native';
 import { heightScale, widthScale } from '../../theme/_scale';
+import { useCart } from '../context/CartContext';
 
 export const ProductCard = ({ item }) => {
+    const [quantity, setQuantity] = useState(0);
+    const { cartQuantity, setCartQuantity } = useCart();
+
+    const increment = () => {
+        setQuantity(prev => prev + 1)
+        setCartQuantity(prev => prev + 1)
+    };
+    const decrement = () => {
+        if (quantity > 1) {
+            setCartQuantity(prev => prev - 1)
+            setQuantity(prev => prev - 1);
+        } else {
+            setQuantity(0);
+            setCartQuantity(0)
+        }
+    };
+    const addBtnHandler = () => {
+        setQuantity(1);
+        setCartQuantity(prev => prev + 1)
+    }
     return (
         <View style={styles.card}>
             {item.discount && (
@@ -29,9 +50,26 @@ export const ProductCard = ({ item }) => {
                         <Text style={styles.originalPrice}>₹{item.originalPrice}</Text>
                     ) : null}
                 </View>
-                <TouchableOpacity style={styles.addButton}>
-                    <Text style={styles.addText}>Add</Text>
-                </TouchableOpacity>
+                {/* Add / Counter UI start */}
+                <View style={styles.counterContainer}>
+                    {quantity === 0 ? (
+                        <TouchableOpacity style={styles.addButton} onPress={addBtnHandler}>
+                            <Text style={styles.addText}>Add</Text>
+                        </TouchableOpacity>
+                    ) : (
+                        <>
+                            <TouchableOpacity onPress={decrement} style={styles.counterButton}>
+                                <Text style={styles.counterText}>-</Text>
+                            </TouchableOpacity>
+                            <Text style={styles.quantityText}>{quantity}</Text>
+                            <TouchableOpacity onPress={increment} style={styles.counterButton}>
+                                <Text style={styles.counterText}>+</Text>
+                            </TouchableOpacity>
+                        </>
+                    )}
+                </View>
+                {/* Add / Counter UI end*/}
+
             </View>
         </View>
     );
@@ -107,17 +145,35 @@ const styles = StyleSheet.create({
         color: '#888',
         textDecorationLine: 'line-through',
     },
-    addButton: {
+    addText: {
+        // fontSize: 18,
+        color: '#e91e63',
+        fontWeight: 'bold',
+        paddingVertical: 4,
+    },
+    counterContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
         borderColor: '#e91e63',
         borderWidth: 1,
         borderRadius: 6,
-        paddingVertical: 6,
-        alignItems: 'center',
-        width: '45%'
-
+        width: widthScale(25),
+        height: heightScale(4),
+        justifyContent: 'space-around',
+        // paddingVertical: 2,
     },
-    addText: {
-        color: '#e91e63',
+    counterButton: {
+        paddingInline: '.3rem',
+    },
+    counterText: {
+        fontSize: 20,
         fontWeight: 'bold',
+        color: '#e91e63',
+    },
+    quantityText: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#000',
     },
 });

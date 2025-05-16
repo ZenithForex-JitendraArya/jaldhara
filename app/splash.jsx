@@ -12,7 +12,11 @@ export default function SplashScreen() {
         console.log('Navigating after splash...');
         const timer = setTimeout(() => {
             console.log('Navigating to /welcome...');
-            router.replace('/welcome');
+            // router.replace('/welcome');
+            // router.replace('MapScreen');
+            router.replace('CartScreen');
+
+
             // router.push('/welcome');
         }, 2000);
 
